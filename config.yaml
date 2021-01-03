@@ -1,0 +1,25 @@
+app:
+  maxRoomNum: 1 # 最大房间数
+  maxPersonOfTime: 50  # 单个房间最大聊天人数
+  maxDiscountTime: 60 # 最大断连时间
+  heartBeatTime: 60 # 心跳周期，单位秒
+  pingWaitTime: 10 # ping连接等待时间，单位秒
+  heartBeatMaxRetry: 1 # 心跳重试最大次数
+  port: 8000 # 应用启动端口
+  tls: false # 是否开启tls
+  retryConnectWaitTime: 1 # 是否开启断线超时重连
+  staticFolder: "resource"  # 静态资源目录
+  allowExts:  # 允许访问后缀文件
+    "jpg":    true
+    "jpeg":   true
+    "bmp":    true
+    "svg":    true
+    "css":    true
+    "js":     true
+    "pdf":    true
+    "woff":   true
+    "woff2":  true
+    "ttf":    true
+  initRoomCount: 12 # 初始化房间数
+  maxRoomCapacity: 50 # 房间容纳人数
+

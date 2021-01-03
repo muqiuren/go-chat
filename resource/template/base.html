@@ -1,0 +1,218 @@
+{{define "base.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="ROBOTS" content="NOINDEX,FOLLOW">
+    <title>{{block "_title" .}}HOME{{end}}</title>
+    <link rel="icon" href="{{block "_favicon" .}}data:;base64,={{end}}">
+	<link rel="stylesheet" type="text/css" href="/assert/style/layer.css">
+	<link rel="stylesheet" type="text/css" href="/assert/style/style.css">
+	<link rel="stylesheet" type="text/css" href="/assert/style/base.css">
+	<link rel="stylesheet" type="text/css" href="/assert/style/font-awesome.min.css">
+	<script type="text/javascript" src="/assert/script/jquery-2.2.3.min.js"></script>
+</head>
+<body>
+	<div id="particles-js">
+        {{block "_main" .}}{{end}}
+	</div>
+</body>
+
+<script type="text/javascript" src="/assert/script/particles.min.js"></script>
+<script type="text/javascript" src="/assert/script/app.js"></script>
+<script type="text/javascript" src="/assert/script/layer.js"></script>
+<script type="text/javascript">
+	"use strict";
+	var ws
+		,client_id
+		,nickname = localStorage.getItem("nickname")
+		,host = '{{.host}}';
+
+	function connect() {
+		client_id = localStorage.getItem("client_id")
+
+		if (client_id && host.indexOf("client_id") === -1) {
+		    if (host.indexOf("?") > -1) {
+		        host += `&client_id=${client_id}`
+            } else {
+		        host += `?client_id=${client_id}`
+            }
+        }
+
+		ws = new WebSocket(host);
+		ws.onopen = onOpen;
+		ws.onmessage = onMessage;
+		ws.onclose = onClose;
+		ws.onerror = onError;
+	}
+
+	// 连接事件
+	function onOpen (evt) {
+		console.log('已建立连接')
+	}
+
+	// 关闭事件
+	function onClose (evt) {
+		console.log('连接已关闭，正在重新连接')
+		connect();
+	}
+
+	// 错误事件
+	function onError (evt) {
+		console.error(evt)
+	}
+
+	// 消息监听
+	function onMessage (evt) {
+		var data = JSON.parse(evt.data);
+		let res;
+		switch (data.act_event) {
+			case 0: // text message
+				if (isJson(data.data)) {
+					res = JSON.parse(data.data)
+					var $self = data.sender == client_id ? "self" : "";
+					add_message(res.content, data.created_at, res.nickname, res.avatar, $self)
+				}
+				break;
+			case 1: // join room
+				if (isJson(data.data)) {
+					res = JSON.parse(data.data)
+					if (res.clients) {
+						refresh_person(res.clients)
+					}
+
+					if (data.sender !== client_id && res.content) {
+						layer.msg(res.content)
+					}
+				}
+				break;
+			case 2: // leave room
+				if (isJson(data.data)) {
+					res = JSON.parse(data.data)
+					if (res.clients) {
+						refresh_person(res.clients)
+					}
+
+					if (data.sender !== client_id && res.content) {
+						layer.msg(res.content)
+					}
+				}
+				break;
+			case 3: // handshake
+				send_message({
+					"act_event": 1,
+					"data": nickname
+				})
+				localStorage.setItem("client_id", data.client_id)
+				break;
+			case 4: // global message
+				if (isJson(data.data)) {
+					res = JSON.parse(data.data)
+					var $self = data.sender == client_id ? "self" : "";
+					add_message(res.content, data.created_at, res.nickname, res.avatar, $self, 1)
+				}
+				break;
+			case 5: // room full message
+					layer.msg(data.data, {
+						offset: "t",
+						anim: 6,
+						time: 3000,
+						end: function() {
+							window.location.href = "/"
+						}
+					})
+				break;
+		}
+	}
+
+	// 是否是json字符串
+	function isJson (str) {
+		if (typeof str == 'string') {
+			try {
+				var obj = JSON.parse(str);
+				if (typeof obj == 'object' && obj) {
+					return true;
+				} else {
+					return false;
+				}
+
+			} catch (e) {
+				return false;
+			}
+		}
+	}
+
+	// 发送消息
+	function send_message(data) {
+		data = JSON.stringify(data)
+		ws.send(data)
+	}
+
+	// 公共聊天
+	function globalMessage() {
+		var input = $('#public-send input')
+		if (input.val() != "") {
+			send_message({
+				"act_event": 4,
+				"data": input.val()
+			})
+			input.val("")
+		}
+	}
+
+	// 发送事件
+	function handleClick() {
+		var textarea = $('textarea[name=content]')
+		if (textarea.val() != "") {
+			send_message({
+				"act_event": 0,
+				"data": textarea.val()
+			})
+			textarea.val("")
+		} else {
+			layer.msg("请输入内容");
+			textarea.focus()
+		}
+	}
+
+
+	// 添加消息
+	function add_message($content, $created_at, $name, $avatar, $self, $global) {
+		var html = "<div class='ms-item "+ $self +"'><a href='javascript:;'><img src="+ $avatar +" alt='' /></a><div><div class='ms-info'><span>"+ $name +"</span><span>"+ $created_at +"</span></div><div class='ms-body'><p>"+ decodeURIComponent($content) +"</p></div></div></div>";
+		if ($global) {
+			$('#global-messages > div.ms-wrap').append(html);
+			$('#global-messages').scrollTop( $('#global-messages')[0].scrollHeight);
+		} else {
+			$('#room-messages > div.ms-wrap').append(html);
+			$('#room-messages').scrollTop( $('#room-messages')[0].scrollHeight);
+		}
+	}
+
+	// 刷新在线成员列表
+	function refresh_person($data) {
+		var person_list = $('.person-list');
+		person_list.find('> li.person').remove();
+		var $list = '';
+		for (var i in $data)
+		{
+			$list += "<li class='person'><a href='javascript:;'><img src='"+ $data[i]["avatar"] +"' alt=''/><span>"+ $data[i]["nickname"] +"</span></a></li>";
+		}
+		$(".person-info > span").html($data.length);
+		person_list.html($list);
+	}
+
+	$(function() {
+
+		connect()
+		while (!nickname || nickname.trim() == "") {
+			nickname = prompt("请输入昵称")
+			if (nickname) {
+				localStorage.setItem("nickname", nickname)
+			}
+		}
+	});
+
+</script>
+{{block "_footer_code" .}}{{end}}
+</html>
+{{end}}

@@ -1,0 +1,80 @@
+{{template "base.html" .}}
+{{define "_title"}}
+	{{.room.Name}}
+{{end}}
+{{define "_favicon"}}
+	{{.room.Avatar | safeUrl}}
+{{end}}
+{{define "_main"}}
+	<div id='main'>
+		<div class="im-container">
+<!-- 		公共聊天 -->
+			<div id="public-chat">
+				<div class="messages" id="global-messages">
+					<div class="ms-wrap">
+
+						<div class="ms-item "><a href="javascript:;"><img src="/assert/image/avatar.jpg" alt=""></a><div><div class="ms-info"><span>管理员</span></div><div class="ms-body"><p>这里是公共频道聊天区，请文明用语哦~</p></div></div></div></div>
+				</div>
+
+				<div id="public-send">
+					<select id="chat-type">
+						<option value="0">世界</option>
+					</select>
+					<input type="text" maxlength="255" autocomplete="off"  placeholder="say something i give up on you">
+					<a href="javascript:;" onclick="globalMessage()">发送</a>
+				</div>
+			</div>
+
+<!-- 		窗口 -->
+			<div id='ms-window' style="border-left:1px solid #ddd;">
+				<div class='ms-header'>
+					<div></div>
+					<span>{{.room.Name}}</span>
+					<div>
+					</div>
+				</div>
+				<!-- 显示消息 -->
+				<div class='messages' id="room-messages">
+					<div class='ms-wrap'>
+
+					</div>
+				</div>
+				<!-- input -->
+				<div id='input-block'>
+					<div id='input-tools'>
+						<ul class='tools-list'>
+							<li><span class='fa fa-smile-o'></span></li>
+						</ul>
+					</div>
+					<textarea placeholder="say something" maxlength="128" name='content'></textarea>
+					<div class='input-btn-group'>
+						<a href="javascript:;" class='input-btn btn-send' onclick='handleClick()' title='Ctrl + S快速发送'>发送(S)</a>
+					</div>
+				</div>
+			</div>
+
+<!-- 		在线列表 -->
+			<div class='right-slider'>
+				<div class='person-info'>在线成员 <span>{{.room.Clients | len}}</span> </div>
+				<ul class='person-list'>
+				</ul>
+			</div>
+
+			<input type="hidden" name='avatar' value='/assert/image/timg.jpg'/>
+			<input type="hidden" name='tuling_avatar' value='/assert/image/avatar.jpg'/>
+		</div>
+	</div>
+{{end}}
+{{define "_footer_code"}}
+	<script>
+		$(function() {
+			$('textarea[name=content]').on('keydown', function(e){
+				if (e.ctrlKey &&e.keyCode == 83)
+				{
+					handleClick();
+					return false;
+				}
+			});
+		})
+	</script>
+{{end}}

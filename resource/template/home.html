@@ -1,0 +1,44 @@
+{{template "base.html" .}}
+{{define "_main"}}
+	<div id='main'>
+		<div class="im-container">
+<!--		公共聊天-->
+			<div id="public-chat">
+				<div class="messages" id="global-messages">
+					<div class="ms-wrap">
+
+						<div class="ms-item "><a href="javascript:;"><img src="/assert/image/avatar.jpg" alt=""></a><div><div class="ms-info"><span>管理员</span></div><div class="ms-body"><p>这里是公共频道聊天区，请文明用语哦~</p></div></div></div></div>
+				</div>
+
+				<div id="public-send">
+					<select id="chat-type">
+						<option value="0">世界</option>
+					</select>
+					<input type="text" maxlength="255" autocomplete="off"  placeholder="say something i give up on you">
+					<a href="javascript:;" onclick="globalMessage()">发送</a>
+				</div>
+			</div>
+
+<!--		房间列表-->
+			<div id="rooms">
+				<ol class="room-list">
+					{{range $uuid,$item := .rooms}}
+						<li>
+							<div>
+								<a href="/?room_id={{$uuid}}">
+									<img src="{{$item.Avatar | safeUrl}}" alt="">
+								</a>
+							</div>
+							<a href="/?room_id={{$uuid}}">{{$item.Name}}</a>
+						</li>
+					{{end}}
+
+				</ol>
+			</div>
+
+
+			<input type="hidden" name='avatar' value='/assert/image/timg.jpg'/>
+			<input type="hidden" name='tuling_avatar' value='/assert/image/avatar.jpg'/>
+		</div>
+	</div>
+{{end}}
