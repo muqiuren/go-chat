@@ -9,6 +9,7 @@
 
 ### 主要依赖库
 项目使用module管理依赖，下面是主要依赖库
+
     github.com/gorilla/websocket
 
     github.com/gorilla/mux
@@ -63,9 +64,9 @@
     go run server.go
 
 ### 效果
-![https://myblog.hatchblog.cn/uploads/20210103/51941357e2c42969a37142cc7bfc4f2c.png](https://myblog.hatchblog.cn/uploads/20210103/51941357e2c42969a37142cc7bfc4f2c.png)
-![https://myblog.hatchblog.cn/uploads/20210103/247d42cea63c560f785470c98e45f0cc.png](https://myblog.hatchblog.cn/uploads/20210103/247d42cea63c560f785470c98e45f0cc.png)
-![https://myblog.hatchblog.cn/uploads/20210103/c61a8dd2c8c62c2f6985c6cbae714380.png](https://myblog.hatchblog.cn/uploads/20210103/c61a8dd2c8c62c2f6985c6cbae714380.png)
+![](https://github.com/muqiuren/go-chat/blob/master/resource/assert/image/1.png)
+![](https://github.com/muqiuren/go-chat/blob/master/resource/assert/image/2.png)
+![](https://github.com/muqiuren/go-chat/blob/master/resource/assert/image/3.png)
 
 ### TODO
 - [x] 前端聊天界面
