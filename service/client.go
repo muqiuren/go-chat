@@ -113,8 +113,10 @@ func (c *Client) ListenPushMessage() {
 					c.App.Broadcast <- message
 				}
 			case SysJoinRoomMessage:
-				c.NickName = message.Data
-				c.Avatar = GenAvatar(message.Data, 128, "jpeg")
+				if strings.Trim(message.Data, " ") != "" {
+					c.NickName = message.Data
+					c.Avatar = GenAvatar(message.Data, 128, "jpeg")
+				}
 				c.App.Clients[c.UUID] = c
 				if _, ok := c.App.Rooms[c.Room.UUID]; ok {
 					repData := map[string]interface{}{

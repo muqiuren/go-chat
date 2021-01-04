@@ -1,14 +1,14 @@
-### 简介
-使用Golang编写的基于websocket的聊天程序，支持多房间群聊，公共频道聊天。
+### About
+A websocket-based chat program written in Golang, supports multi-room group chat and public channel chat.
 
-### 功能特性
-* 支持多房间群聊
-* 支持公共频道聊天
-* 心跳检测
-* 显示在线用户列表
+### Features
+* Support multi-room group chat
+* Support public channel chat
+* Heartbeat detection
+* Show online user list
 
-### 主要依赖库
-项目使用module管理依赖，下面是主要依赖库
+### Main Depends Library
+The project uses module to manage dependencies, the following is the main dependency library
     github.com/gorilla/websocket
 
     github.com/gorilla/mux
@@ -19,18 +19,18 @@
     
     github.com/staori/go.uuid
 
-### 目录结构
+### Directory Structure
 
 ```
-├─config            // 配置文件目录
-├─resource          // 资源目录
-│  ├─assert         // 静态资源目录
+├─config            // Configuration file directory
+├─resource          // Resource catalog
+│  ├─assert         // Static resource directory
 │  │  ├─font
 │  │  ├─image
 │  │  ├─script
 │  │  └─style
-│  └─template       // 模板文件目录
-│     ├─base.html   // 基础模板
+│  └─template       // Template file directory
+│     ├─base.html   // Basic template
 │     ├─room.html   
 │     └─home.html
 ├─service           
@@ -43,38 +43,38 @@
 │  ├─loader.go
 │  ├─room.go
 │  └─router.go
-├─config.yaml        // 应用配置文件
+├─config.yaml        // Application configuration file
 ├─README.md            
-├─server.go          // 服务启动
+├─server.go          // Service start
 └─server_test.go   
 ```  
 
-### 运行
-    // 下载项目
+### Start
+    // Download Project
     git clone https://www.github.com/muqiuren/go-chat
     
-    // 进入项目根目录
+    // Enter the project root directory
     cd go-chat
     
-    // 检查依赖
+    // Check dependencies
     go mod tidy
     
-    // 启动应用,访问http://localhost:8000
+    // Start Application,Visiter http://localhost:8000
     go run server.go
 
-### 效果
+### Result
 ![https://myblog.hatchblog.cn/uploads/20210103/51941357e2c42969a37142cc7bfc4f2c.png](https://myblog.hatchblog.cn/uploads/20210103/51941357e2c42969a37142cc7bfc4f2c.png)
 ![https://myblog.hatchblog.cn/uploads/20210103/247d42cea63c560f785470c98e45f0cc.png](https://myblog.hatchblog.cn/uploads/20210103/247d42cea63c560f785470c98e45f0cc.png)
 ![https://myblog.hatchblog.cn/uploads/20210103/c61a8dd2c8c62c2f6985c6cbae714380.png](https://myblog.hatchblog.cn/uploads/20210103/c61a8dd2c8c62c2f6985c6cbae714380.png)
 
 ### TODO
-- [x] 前端聊天界面
-- [x] 多房间
-- [x] 公共聊天频道
-- [x] 进入离开房间广播
-- [x] 心跳检测
-- [x] 在线用户列表
-- [ ] 图灵接入
+- [x] Frontend UI
+- [x] Multi-room group chat
+- [x] Public chat channel
+- [x] Enter and leave room broadcast
+- [x] Heartbeat detection
+- [x] Show Online user list
+- [ ] Turing access
 
-### 更多
-[使用Go编写基于websocket聊天程序详解](https://myblog.hatchblog.cn/article-23.html)
+### More
+[Use Go to write a websocket-based chat program](https://myblog.hatchblog.cn/article-23.html)
