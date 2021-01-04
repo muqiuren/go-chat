@@ -64,9 +64,9 @@
     go run server.go
 
 ### 效果
-![](https://github.com/muqiuren/go-chat/blob/master/resource/assert/image/1.png)
-![](https://github.com/muqiuren/go-chat/blob/master/resource/assert/image/2.png)
-![](https://github.com/muqiuren/go-chat/blob/master/resource/assert/image/3.png)
+![image1](https://github.com/muqiuren/go-chat/blob/master/resource/assert/image/1.png)
+![image2](https://github.com/muqiuren/go-chat/blob/master/resource/assert/image/2.png)
+![image3](https://github.com/muqiuren/go-chat/blob/master/resource/assert/image/3.png)
 
 ### TODO
 - [x] 前端聊天界面
